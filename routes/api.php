@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["prefix" => "v1"], function(){
+Route::group(["prefix" => "v1", 'middleware' => 'cors'], function(){
 
     Route::prefix('auth')->group(function () {
         Route::post('login', 'Api\AuthController@login');
