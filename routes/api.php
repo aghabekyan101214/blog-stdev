@@ -24,9 +24,13 @@ Route::group(["prefix" => "v1"], function(){
             Route::post('refresh-token', 'Api\AuthController@refreshToken');
             Route::post('logout','Api\AuthController@logout');
             Route::get('get-user', 'Api\AuthController@getUser');
+            Route::post('update-user', 'Api\AuthController@update');
         });
     });
-
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::resource("articles", "Api\ArticleController");
+        Route::get("categories", "Api\CategoryController@index");
+    });
 });
 
 

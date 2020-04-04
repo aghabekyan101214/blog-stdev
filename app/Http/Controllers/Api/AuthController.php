@@ -22,9 +22,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'full_name' => 'required|max:100',
+                'nickname' => 'required|max:100',
                 'email' => 'required|unique:users|max:150',
-                'role' => 'required|integer|min:1|max:2',
                 'password' => 'required',
                 'confirm_password' => 'required|same:password',
             ]);
@@ -33,9 +32,8 @@ class AuthController extends Controller
         }
 
         $user = new User;
-        $user->full_name = $request->full_name;
+        $user->nickname = $request->nickname;
         $user->email = $request->email;
-        $user->role = $request->role;
         $user->password = bcrypt($request->password);
         $user->save();
 
@@ -85,6 +83,30 @@ class AuthController extends Controller
             }
         }
         return ResponseHelper::fail("Wrong Credentials", ResponseHelper::UNPROCESSABLE_ENTITY_EXPLAINED);
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'nickname' => 'required|max:100',
+                'password' => 'required',
+                'confirm_password' => 'required|same:password',
+            ]);
+        if ($validator->fails()) {
+            return ResponseHelper::fail($validator->errors()->first(), ResponseHelper::UNPROCESSABLE_ENTITY_EXPLAINED);
+        }
+
+        $user = User::find(Auth::user()->id);
+        $user->nickname = $request->nickname;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        $data = array(
+            'user' => $user,
+        );
+
+        return ResponseHelper::success($data);
     }
 
     /**
