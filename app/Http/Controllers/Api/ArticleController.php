@@ -61,10 +61,10 @@ class ArticleController extends Controller
             return ResponseHelper::fail($validator->errors()->first(), ResponseHelper::UNPROCESSABLE_ENTITY_EXPLAINED);
         }
 
-        $last = Article::orderBy("id", "desc")->first();
+        $last = Article::orderBy("id", "desc")->first()->id ?? 0;
         $article = new Article();
         $article->title = $data["title"];
-        $article->slug = $this->slugify($data["title"]) . "-" . ( ($last->id + 1 )?? 1);
+        $article->slug = $this->slugify($data["title"]) . "-" . $last + 1;
         $article->text = $data["text"];
         $article->category_id = $data["category_id"];
         $article->user_id = Auth::user()->id;
