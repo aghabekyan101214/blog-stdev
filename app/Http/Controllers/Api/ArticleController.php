@@ -21,7 +21,7 @@ class ArticleController extends Controller
         $order = $request->order == "asc" ? "asc" : "desc";
         $query = strtolower($request->search);
         $sql = Article::withCount("comments")->orderBy("created_at", $order);
-        if(null != $query) $sql->where("title", "ILIKE", "%$query%");
+        if(null != $query) $sql->where("title", "LIKE", "%$query%");
         $articles = $sql->get();
         if(null != $request->slug) {
             $arr = array(
