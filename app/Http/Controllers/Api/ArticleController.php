@@ -25,7 +25,7 @@ class ArticleController extends Controller
         $articles = $sql->paginate(2);
         if(null != $request->article_id) {
             $arr = array(
-                "article" => Article::with(["category", "comments"])->find($request->article_id),
+                "article" => Article::with(["category", "comments"])->where("slug", $request->slug)->first(),
             );
             return ResponseHelper::success($arr);
         }
