@@ -22,7 +22,7 @@ class ArticleController extends Controller
         $query = strtolower($request->search);
         $sql = Article::withCount("comments")->orderBy("created_at", $order);
         if(null != $query) $sql->where("title", "ILIKE", "%$query%");
-        $articles = $sql->paginate(2);
+        $articles = $sql->paginate(20);
         if(null != $request->slug) {
             $arr = array(
                 "article" => Article::with(["category", "comments"])->where("slug", $request->slug)->first(),
