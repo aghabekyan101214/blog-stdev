@@ -25,7 +25,9 @@ class ArticleController extends Controller
         $articles = $sql->get();
         if(null != $request->slug) {
             $arr = array(
-                "article" => Article::with(["category", "comments"])->where("slug", $request->slug)->first(),
+                "article" => Article::with(["category", "comments" => function($query) {
+                    $query->limit(5);
+                }])->where("slug", $request->slug)->first(),
             );
             return ResponseHelper::success($arr);
         }
