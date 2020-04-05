@@ -16,7 +16,7 @@ class CommentController extends Controller
         $validator = Validator::make($data,
             [
                 'article_id' => 'required|integer',
-                'text' => 'required',
+                'comment' => 'required',
             ]);
         if ($validator->fails()) {
             return ResponseHelper::fail($validator->errors()->first(), ResponseHelper::UNPROCESSABLE_ENTITY_EXPLAINED);
