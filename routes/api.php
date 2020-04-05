@@ -30,6 +30,7 @@ Route::group(["prefix" => "v1", 'middleware' => 'cors'], function(){
     Route::group(['middleware' => 'auth:api'], function () {
         Route::resource("articles", "Api\ArticleController");
         Route::get("categories", "Api\CategoryController@index");
+        Route::post("comment", "Api\CommentController@leaveComment");
     });
 });
 
